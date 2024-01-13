@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile</title>
+</head>
+<body>
+  <div class="profile-container">
+    <div class="user-info">
+      <img src="assets/logged-user.png" alt="User Image" class="user-image">
+      <h2 class="username">{{user?.username}}</h2>
+      <p class="email">{{user?.email}}</p>
+      <p class="quizzes-played">Quizzes played: {{user?.quizesPlayed}}</p>
+      <p class="points">Points: {{user?.points}}</p>
+    </div>
+    <div class="quiz-history">
+      <h3>Quiz History</h3>
+      <ul>
+        <li *ngFor="let title of user?.quizHistoryTitle; let i = index">{{title}}</li>
+        <p *ngIf="(!user?.quizHistoryTitle || user?.quizHistoryTitle?.length == 0)">Nothing here for now...</p>
+      </ul>
+    </div>
+  </div>
+  <mat-tab-group *ngIf="user?.isAdmin || false" mat-stretch-tabs="false" mat-align-tabs="center" [color]="'white'" [backgroundColor]="'primary'">
+    <mat-tab label="Questions" class="center">
+
+      <div class="search-create-container">
+        <mat-form-field class="search-width">
+          <mat-label>Search questions</mat-label>
+          <input matInput placeholder="What is ..." [(ngModel)]="searchText">
+        </mat-form-field>
+        <button class="create-btn" (click)="createQuestion()">Create</button>
+      </div>
+
+        <mat-grid-list cols="3" rowHeight="3:1">
+          <mat-grid-tile *ngFor="let question of filteredQuestions | filter: searchText; let i = index;">
+            <div class="question-card-container">
+              <div class="question-card">
+                <p class="question-text">{{question.title}}</p>
+                <div class="card-buttons">
+                  <button class="edit-btn" (click)="editQuestion(i)">Edit</button>
+                  <button class="delete-btn" (click)="deleteQuestion(i)">Delete</button>
+                </div>
+              </div>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+    </mat-tab>
+    <mat-tab label="Quizzes">
+      <div class="quiz-list-container">
+        <div class="create-quiz-div">
+          <button class="create-btn" (click)="createQuiz()">Create</button>
+        </div>
+        <div *ngFor="let quiz of quizzes; let i = index;" class="quiz-item">
+            <span class="quiz-title">{{quiz.title}}</span>
+            <button class="delete-btn" (click)="deleteQuiz(quiz.id!!)">Delete</button>
+        </div>
+    </div>
+    </mat-tab>
+
+    <mat-tab label="Users">
+      <div class="user-list">
+        <div *ngFor="let user of users; let i = index;" class="user-item">
+          <span class="username">Username: {{user.username}}, Mail: {{user.email}}</span>
+          <button *ngIf="user.username != 'Admin'" class="delete-btn" (click)="deleteUser(user.userId!!)">Delete</button>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Categories">
+      <div class="category-management-container">
+        <div class="add-category">
+            <input type="text" placeholder="Enter new category" class="category-input" [(ngModel)]="newCategoryTitle">
+            <button class="add-btn" (click)="createCategory()">Add</button>
+        </div>
+
+        <div class="category-list">
+            <div *ngFor="let category of categories.categories; let i = index;" class="category-item">
+                <span class="category-name">{{category}}</span>
+            </div>
+        </div>
+    </div>
+    </mat-tab>
+  </mat-tab-group>
+</body>
+</html>

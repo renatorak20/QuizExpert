@@ -1,0 +1,37 @@
+<div class="quiz-creation-container">
+  <h1>Create a New Quiz</h1>
+  <form id="quiz-form" [formGroup]="createQuizGroup" (submit)="onSubmit($event)">
+    <label for="quiz-title">Quiz Title:</label>
+    <input type="text" id="quiz-title" name="quizTitle" placeholder="Enter quiz title" formControlName="title" [(ngModel)]="title"><br>
+    <span *ngIf="createQuizGroup.get('title')?.invalid && createQuizGroup.get('title')?.dirty">Title is not long enough!</span>
+
+    <input type="submit" value="Create Quiz">
+    <h2>Select Questions:</h2>
+    <div class="question-count" [ngClass]="{'questions-limit': selectedQuestions.length > 6 || selectedQuestions.length == 0}">Selected Questions: <span id="selected-count">{{selectedQuestions.length}}</span></div>
+    <div class="search-container">
+      <input type="text" id="question-search" placeholder="Search questions..." 
+             formControlName="filter" name="filter">
+    </div>
+    
+    
+    
+    <div *ngIf="!isFilterOn" class="questions-container">
+      <div *ngFor="let question of loadedQuestions; let i = index;" class="question-item">
+        <input type="checkbox" [id]="'question' + question.id" name="questions" 
+               (change)="questionSelection($event, question.id!!)">
+        <label [for]="'question' + question.id">{{question.title}}</label>
+      </div>
+    </div>
+    
+
+    <div *ngIf="isFilterOn" class="questions-container">
+      <div *ngFor="let question of filteredQuestions; let i = index;" class="question-item">
+        <input type="checkbox" [id]="'question' + question.id" name="questions" 
+               (change)="questionSelection($event, question.id!!)">
+        <label [for]="'question' + question.id">{{question.title}}</label>
+      </div>
+    </div>
+    
+  
+  </form>
+</div>

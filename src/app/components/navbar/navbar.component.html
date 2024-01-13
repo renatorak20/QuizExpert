@@ -1,0 +1,18 @@
+<mat-toolbar color="primary">
+  <button mat-button routerLink="/">Home</button>
+  <button mat-button routerLink="/play">Play</button>
+  <span class="space"></span>
+
+  <button mat-icon-button [matMenuTriggerFor]="userMenu">
+    <img *ngIf="!isLoggedIn" src="assets/user.svg">
+    <img *ngIf="isLoggedIn" src="assets/logged-user.png">
+  </button>
+
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item *ngIf="!isLoggedIn" routerLink="/login">Login</button>
+    <button mat-menu-item *ngIf="!isLoggedIn" routerLink="/register">Register</button>
+    <button mat-menu-item *ngIf="isLoggedIn" routerLink="/profile">Profile</button>
+    <button mat-menu-item *ngIf="isLoggedIn" (click)="signOut()">Sign Out</button>
+  </mat-menu>
+</mat-toolbar>
+
