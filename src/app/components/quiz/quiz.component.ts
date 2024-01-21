@@ -96,11 +96,11 @@ export class QuizComponent {
 
   nextQuestion(): void {
     this.showNextBtn = false;
+    this.currentCategory = this.categories.find(cat => cat.id == this.currentQuestion.category)?.title!!;
     this.currentQuestionIndex++;
     this.currentQuestion = this.questions[this.currentQuestionIndex];
     this.selectedAnswer = null;
     this.isWrongAnswerSelected = false;
-    this.currentCategory = this.categories.find(cat => cat.id == this.currentQuestion.category)?.title!!;
 
     if (this.currentQuestionIndex == this.questions.length) {
 

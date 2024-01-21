@@ -64,10 +64,15 @@
 
     <mat-tab label="Categories">
       <div class="category-management-container">
-        <div class="add-category">
-            <input type="text" placeholder="Enter new category" class="category-input" [(ngModel)]="newCategoryTitle">
-            <button class="add-btn" (click)="createCategory()">Add</button>
-        </div>
+        <form [formGroup]="categoryGroup">
+          <div class="add-category">
+              <input type="text" placeholder="Enter new category" class="category-input" formControlName="newCategory">
+              <button class="add-btn" (click)="createCategory()">Add</button>
+          </div>
+          <div style="color: white; font-size: 20px;" *ngIf="categoryGroup.get('newCategory')?.invalid && (categoryGroup.get('newCategory')?.dirty || categoryGroup.get('newCategory')?.touched)">
+              Category needs to have at least 4 characters
+          </div>  
+        </form>
 
 
         <div *ngIf="categories" class="category-list">
@@ -77,8 +82,6 @@
               <button class="delete-btn" (click)="deleteCategory(category.id!!)">Delete</button>
           </div>
       </div>
-      
-      
       
     </div>
     </mat-tab>

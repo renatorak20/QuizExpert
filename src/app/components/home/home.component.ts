@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/Auth.service';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +9,14 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   startQuiz() {
-    this.router.navigate(['play'])
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['play'])
+    } else {
+      this.router.navigate(['/register'])
+    }
   }
 
 }

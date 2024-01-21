@@ -8,6 +8,7 @@ import { DataService } from '../../services/Data.service';
 import { QuizzesService } from '../../services/Quizzes.service';
 import { Quiz } from '../../models/Quiz';
 import { Categories, Category } from '../../models/Categories';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { Categories, Category } from '../../models/Categories';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router, private questionsService: QuestionsService, private dataService: DataService, private quizzesService: QuizzesService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private questionsService: QuestionsService, private dataService: DataService, private quizzesService: QuizzesService) {}
 
   user: User | null = null;
   isAdmin: boolean = false;
@@ -34,6 +35,8 @@ export class ProfileComponent implements OnInit {
 
   newCategoryTitle: string = "";
   searchText: string = "";
+
+  categoryGroup!: FormGroup<any>;
 
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
@@ -62,6 +65,10 @@ export class ProfileComponent implements OnInit {
         this.dataService.getCategories()
         .subscribe((res: any) => {
           this.categories = res;
+        });
+
+        this.categoryGroup = this.fb.group({
+          'newCategory': new FormControl("", [Validators.required, Validators.minLength(4)]),
         });
     } else {
       this.router.navigate(['']);
@@ -120,7 +127,7 @@ export class ProfileComponent implements OnInit {
     let newCategory = new Category(this.newCategoryTitle);
     this.dataService.createCategory(newCategory)
     .subscribe((res: any) => {
-      this.categories.push(new Category(this.newCategoryTitle, res.name))
+      this.categories.push(new Category(this.categoryGroup.value.newCategory, res.name))
       console.log(this.categories);
     });
   }
@@ -136,13 +143,15 @@ export class ProfileComponent implements OnInit {
   }
 
   editCategory(id: string, newTitle: string) {
-    this.dataService.editCategory(new Category(newTitle, id))
-    .subscribe((res: any) => {
-      this.dataService.getCategories()
+    if (newTitle.length > 3) {
+      this.dataService.editCategory(new Category(newTitle, id))
       .subscribe((res: any) => {
-        this.categories = res;
+        this.dataService.getCategories()
+        .subscribe((res: any) => {
+          this.categories = res;
+        })
       })
-    })
+    }
   }
 
   createQuiz() {
