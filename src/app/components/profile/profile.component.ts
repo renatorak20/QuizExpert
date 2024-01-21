@@ -78,15 +78,13 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  filterQuestions(filter: Event) {
-    const filterValue = (filter.target as HTMLInputElement).value;
-    console.log(filterValue);
-    if (filterValue === '') {
+  filterQuestions() {
+    if (this.searchText === '') {
       this.filteredQuestions = this.questions;
     }
 
     this.filteredQuestions = this.questions.filter(question => {
-      return question.title.toLowerCase().includes(filterValue.toLowerCase());
+      return question.title.toLowerCase().includes(this.searchText.toLowerCase());
     });
   }
 
@@ -97,7 +95,6 @@ export class ProfileComponent implements OnInit {
   deleteQuestion(index: number) {
     let id = this.filteredQuestions[index].id;
     this.questionsService.deleteQuestion(id!!).subscribe(response => {
-      console.log('Question deleted', response);
       this.loadQuestions();
     }, error => {
       console.error('Error deleting question:', error);
@@ -106,6 +103,8 @@ export class ProfileComponent implements OnInit {
 
   editQuestion(index: number) {
     let id = this.filteredQuestions[index].id;
+    console.log(this.filteredQuestions);
+    console.log(index);
     this.router.navigate([`admin/edit-question/${id}`])
   }
 

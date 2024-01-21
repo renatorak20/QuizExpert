@@ -4,6 +4,8 @@
     <input type="text" formControlName="username"><br>
     <label for="password"><b>Password:</b></label>
     <input type="password" formControlName="password"><br><br>
+    <span *ngIf="wrongUsername">User with that username doesn't exist!</span>
+    <span *ngIf="wrongPassword">Wrong password!</span>
     <button class="login-button">Login!</button>
     <div class="register-link">
         <a [routerLink]="['/register']">Go To Register</a>

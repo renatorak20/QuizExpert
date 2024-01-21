@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/Data.service';
 import { Categories } from '../../models/Categories';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { QuestionsService } from '../../services/Questions.service';
 import { Question } from '../../models/Question';
 import { Router } from '@angular/router';
@@ -38,7 +38,70 @@ export class CreateQuestionComponent implements OnInit {
         'answer3': new FormControl("", Validators.required),
         'answer4': new FormControl("", Validators.required),
         'correctAnswer': new FormControl("", Validators.required)
+      }, {
+        validators: [
+          this.answersFilled('answer1', 'answer2', 'answer3', 'answer4'),
+          this.titleFilled('title'),
+          this.checkAnswer('correctAnswer')
+        ]
       });
+  }
+
+  titleFilled(title: string) {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const Title = formGroup.get(title)!!;
+
+      if (!title) {
+        return null;
+      }
+
+      if (Title.value.length < 4) {
+        Title.setErrors({ minLength: true });
+        return { minLength: true };
+      } else {
+        Title.setErrors(null);
+        return null;
+      }
+    };
+  }
+
+  checkAnswer(answer: string) {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const answerV = formGroup.get(answer)!!;
+
+      if (!answerV) {
+        return null;
+      }
+
+      if (answerV.value.length == "") {
+        answerV.setErrors({ notSelected: true });
+        return { notSelected: true };
+      } else {
+        answerV.setErrors(null);
+        return null;
+      }
+    };
+  }
+
+  answersFilled(a1: string, a2: string, a3: string, a4: string) {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const answer1 = formGroup.get(a1);
+      const answer2 = formGroup.get(a2);
+      const answer3 = formGroup.get(a3);
+      const answer4 = formGroup.get(a4);
+
+      if (!answer1 || !answer2 || !answer3 || !answer4) {
+        return null;
+      }
+
+      if (answer1.value.length == 0 || answer2.value.length == 0 || answer3.value.length == 0 || answer4.value.length == 0) {
+        answer1.setErrors({ requiredAnswers: true });
+        return { requiredAnswers: true };
+      } else {
+        answer1.setErrors(null);
+        return null;
+      }
+    };
   }
 
   onCategoryChange(event: Event): void {
@@ -53,18 +116,13 @@ export class CreateQuestionComponent implements OnInit {
     let categoryType = this.categories?.categories.findIndex((category: any) => {
       return category == this.selected;
     });
-    console.log(categoryType);
     if (this.createQuestionGroup.valid) {
       const formValues = this.createQuestionGroup.value;
 
       let correctAnswer = formValues.correctAnswer;
       let answers = [formValues.answer1, formValues.answer2, formValues.answer3, formValues.answer4];
-      console.log(correctAnswer);
-      console.log(answers);
       let newQuestion = new Question(formValues.title, (categoryType!! + 1), correctAnswer, answers)
       this.questionsService.addQuesion(newQuestion).subscribe(response => {
-        console.log("res");
-        console.log(response);
         this.openSnackBar("Question created", "")
         setTimeout(() => {
           this.router.navigate(['profile'])

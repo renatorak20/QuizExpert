@@ -37,8 +37,20 @@
               {{ category }}
             </option>
           </select>
-          
           <br>
+
+        <div style="color: white; font-size: 20px;" *ngIf="createQuestionGroup.controls['title'].invalid && (createQuestionGroup.controls['title'].dirty || createQuestionGroup.controls['title'].touched)">
+            Title needs to have at least 4 characters
+        </div>
+        <br>
+        <div style="color: white; font-size: 20px;" *ngIf="createQuestionGroup.controls['answer1'].invalid && (createQuestionGroup.controls['answer1'].dirty || createQuestionGroup.controls['answer1'].touched)">
+            All four answers need to be filled in
+        </div>
+        <br>
+        <div style="color: white; font-size: 20px;" *ngIf="createQuestionGroup.controls['correctAnswer'].invalid && (createQuestionGroup.controls['correctAnswer'].dirty || createQuestionGroup.controls['correctAnswer'].touched)">
+            Correct answer needs to be selected
+        </div>
+        <br>
 
         <input type="submit" value="Create">
     </form>

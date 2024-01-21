@@ -76,9 +76,6 @@ export class CreateQuizComponent implements OnInit {
 
   onSubmit(event: Event) {
     event.preventDefault();
-    console.log("On submit");
-    console.log(this.createQuizGroup.valid);
-    console.log(this.selectedQuestions.length);
     if (this.createQuizGroup.valid && this.selectedQuestions.length > 0 && this.selectedQuestions.length < 7) {
       this.quizService.addQuiz(new Quiz(this.title, this.selectedQuestions))
       .subscribe((res: any) => {      

@@ -3,6 +3,8 @@ body {
   background-color: #282c35;
   color: #fff;
   margin: 0 auto;
+  background-image: url("assets/background.jpg");
+  background-size: cover;
 }
 html, body { height: 100%; }
 

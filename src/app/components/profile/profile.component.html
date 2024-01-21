@@ -14,13 +14,6 @@
       <p class="quizzes-played">Quizzes played: {{user?.quizesPlayed}}</p>
       <p class="points">Points: {{user?.points}}</p>
     </div>
-    <div class="quiz-history">
-      <h3>Quiz History</h3>
-      <ul>
-        <li *ngFor="let title of user?.quizHistoryTitle; let i = index">{{title}}</li>
-        <p *ngIf="(!user?.quizHistoryTitle || user?.quizHistoryTitle?.length == 0)">Nothing here for now...</p>
-      </ul>
-    </div>
   </div>
   <mat-tab-group *ngIf="user?.isAdmin || false" mat-stretch-tabs="false" mat-align-tabs="center" [color]="'white'" [backgroundColor]="'primary'">
     <mat-tab label="Questions" class="center">
@@ -28,7 +21,7 @@
       <div class="search-create-container">
         <mat-form-field class="search-width">
           <mat-label>Search questions</mat-label>
-          <input matInput placeholder="What is ..." [(ngModel)]="searchText">
+          <input matInput placeholder="What is ..." (change)="filterQuestions()" [(ngModel)]="searchText">
         </mat-form-field>
         <button class="create-btn" (click)="createQuestion()">Create</button>
       </div>
@@ -75,7 +68,7 @@
             <button class="add-btn" (click)="createCategory()">Add</button>
         </div>
 
-        <div class="category-list">
+        <div *ngIf="categories" class="category-list">
             <div *ngFor="let category of categories.categories; let i = index;" class="category-item">
                 <span class="category-name">{{category}}</span>
             </div>

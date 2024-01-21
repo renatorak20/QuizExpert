@@ -10,13 +10,13 @@
         <input type="text" formControlName="name" placeholder="Name"><br>
     <label for="email"><b>E-mail:</b></label><br>
     <input type="email" formControlName="email" placeholder="E-mail"><br><br>
-    <div style="color: red;" *ngIf="registerGroup.controls['username'].invalid && (registerGroup.controls['username'].dirty || registerGroup.controls['username'].touched)">
+    <div style="color: white; font-size: 20px;" *ngIf="registerGroup.controls['username'].invalid && (registerGroup.controls['username'].dirty || registerGroup.controls['username'].touched)">
         Username needs to have at least 4 characters
     </div>
-    <div style="color: red;" *ngIf="registerGroup.controls['email'].invalid && (registerGroup.controls['email'].dirty || registerGroup.controls['email'].touched)">
+    <div style="color: white; font-size: 20px;" *ngIf="registerGroup.controls['email'].invalid && (registerGroup.controls['email'].dirty || registerGroup.controls['email'].touched)">
         E-mail is not valid
     </div>
-    <div style="color: red;" *ngIf="registerGroup.get('passwordRepeat')?.invalid && (registerGroup.get('passwordRepeat')?.dirty || registerGroup.get('passwordRepeat')?.touched)">
+    <div style="color: white; font-size: 20px;" *ngIf="registerGroup.get('passwordRepeat')?.invalid && (registerGroup.get('passwordRepeat')?.dirty || registerGroup.get('passwordRepeat')?.touched)">
         Passwords do not match
     </div>  
 

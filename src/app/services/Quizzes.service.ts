@@ -33,7 +33,6 @@ export class QuizzesService {
   }
 
   addQuiz(newQuiz: Quiz) {
-    console.log(newQuiz);
     return this.http.post(`${this.apiUrl}`, newQuiz)
   }
 
@@ -43,7 +42,6 @@ export class QuizzesService {
 
   editQuiz(quizToEdit: Quiz) {
     const { id, ..._quizToEdit } = quizToEdit
-    console.log(_quizToEdit)
     return this.http.patch(`https://quizexpert-e2f59-default-rtdb.europe-west1.firebasedatabase.app/quizzes/${quizToEdit.id}.json`, _quizToEdit)
   }
 

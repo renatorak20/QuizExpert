@@ -15,10 +15,14 @@ export class AuthService implements OnInit {
 
   users: User[] = [];
   usersSubject: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
-
+  private passwordValidSubject = new BehaviorSubject<boolean>(false);
   constructor(private router : Router, private dataService: DataService) { }
 
   ngOnInit() {
+    this.getUsers()
+  }
+
+  getUsers() {
     this.dataService.getUsers()
     .subscribe((res:any) => {
       this.users = res;
@@ -38,9 +42,12 @@ export class AuthService implements OnInit {
             const passwordValid = await bcrypt.compare(credentials.password, u?.password!!);
             if(passwordValid) {
               observer.next(u);
+              this.passwordValidSubject.next(true);
+            } else {
+              this.passwordValidSubject.next(false);
             }
           }
-        },100);
+        },1);
       }).subscribe((user : any) => {
         if (user) {
           this.user = user;
@@ -50,6 +57,10 @@ export class AuthService implements OnInit {
         }
       });
     })
+  }
+
+  isPasswordValid() {
+    return this.passwordValidSubject.asObservable();
   }
 
   logout(){
@@ -86,7 +97,7 @@ export class AuthService implements OnInit {
       .subscribe(async (res:any) => {
         this.users = res;
         this.usersSubject.next([...this.users]);
-        if (!this.doesUsernameExists(newuser.username)) {
+        if (!this.doesUserExist(newuser.username)) {
           const salt = await bcrypt.genSalt(10);
           const hash = await bcrypt.hash(newuser.password, salt);
           const newUser = new User(newuser.username, hash, newuser.name, newuser.email);
@@ -102,10 +113,6 @@ export class AuthService implements OnInit {
           }))
         }
       })
-  }
-
-  doesUsernameExists(username: string) {
-    return this.users.some(user => user.username == username);
   }
 
 }

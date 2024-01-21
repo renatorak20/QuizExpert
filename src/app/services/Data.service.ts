@@ -52,8 +52,6 @@ export class DataService {
   }
 
   editUser(user: User) {
-    console.log("Editing user");
-    console.log(user);
     return this.http.patch(`${this.apiUrl}/users/${user.userId}.json`, user);
   }
 

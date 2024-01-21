@@ -11,12 +11,13 @@ import { AuthService } from '../../services/Auth.service';
 export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup<any>;
-  isPasswordWrong = false;
+  wrongUsername = false;
+  wrongPassword = false;
 
   constructor(private authService : AuthService, private router : Router) { }
 
   ngOnInit() {
-
+    this.authService.getUsers();
     this.loginForm = new FormGroup({
       'username' : new FormControl(null, [Validators.required]),
       'password' : new FormControl(null, [Validators.required])
@@ -27,8 +28,23 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onLogin(){
-    this.authService.login(this.loginForm!!.value);
+  onLogin() {
+    let doesExist = this.authService.doesUserExist(this.loginForm.value.username);
+    if (doesExist == undefined) {
+      this.wrongUsername = true;
+    } else {
+      this.wrongUsername = false;
+      this.authService.login({username: this.loginForm.value.username, password: this.loginForm.value.password});
+      this.authService.isPasswordValid()
+      .subscribe(isValid => {
+        if (!isValid) {
+          this.wrongPassword = true;
+        } else {
+          this.wrongPassword = false;
+        }
+      })
+    }
   }
+  
 
 }

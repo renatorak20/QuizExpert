@@ -43,7 +43,6 @@ export class EditQuestionComponent implements OnInit {
     this.questionService.getQuestionById(this.questionId)
     .subscribe((res: any) => {
       this.loadedQuestion = res;
-      console.log(res);
     })
 
     
@@ -70,10 +69,6 @@ export class EditQuestionComponent implements OnInit {
 
   onSubmit(event: Event) {
     event.preventDefault();
-    let categoryType = this.categories?.categories.findIndex((category: any) => {
-      return category == this.selectedCategory;
-    });
-    console.log(this.editQuestionGroup.value)
     if (this.editQuestionGroup.valid) {
       const formValues = this.editQuestionGroup.value;
 

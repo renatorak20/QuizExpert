@@ -1,9 +1,9 @@
 <h1 class="title">{{quiz?.title}}</h1>
 <div *ngIf="!quizOver" id="quiz-container">
-    <div class="question" *ngIf="currentQuestion.title">{{currentQuestion.title || ""}}</div>
-    <p>Category: {{categories.categories[currentQuestion.category - 1]}}</p>
-    <p>Question {{currentQuestionIndex + 1}}/{{questions.length}}</p>
-    <div class="answer-container">
+    <div class="question" *ngIf="currentQuestion?.title || false">{{currentQuestion.title || ""}}</div>
+    <p *ngIf="currentQuestion">Category: {{categories.categories[currentQuestion.category - 1] || ""}}</p>
+    <p *ngIf="questions">Question {{currentQuestionIndex + 1}}/{{questions.length || 0}}</p>
+    <div class="answer-container" *ngIf="currentQuestion">
       <div [ngClass]="{'answer': true, 'correct': isSelectedCorrect(0), 'incorrect': isSelectedIncorrect(0)}" (click)="checkAnswer(0)">{{currentQuestion.answers[0]}}</div>
       <div [ngClass]="{'answer': true, 'correct': isSelectedCorrect(1), 'incorrect': isSelectedIncorrect(1)}" (click)="checkAnswer(1)">{{currentQuestion.answers[1]}}</div>
       <div [ngClass]="{'answer': true, 'correct': isSelectedCorrect(2), 'incorrect': isSelectedIncorrect(2)}" (click)="checkAnswer(2)">{{currentQuestion.answers[2]}}</div>

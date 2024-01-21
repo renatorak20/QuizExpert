@@ -27,21 +27,6 @@ body, html {
     margin: 10px 0;
   }
   
-  .quiz-history h3 {
-    margin-top: 20px;
-  }
-  
-  .quiz-history ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .quiz-history li {
-    margin: 10px 0;
-    padding: 5px;
-    border-radius: 4px;
-  }
-  
   .question-card-container {
     display: flex;
     flex-direction: column;

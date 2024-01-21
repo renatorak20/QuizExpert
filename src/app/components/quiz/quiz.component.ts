@@ -70,12 +70,12 @@ export class QuizComponent {
   }
 
   isSelectedCorrect(index: number): boolean {
-    const isCorrect = this.selectedAnswer === this.currentQuestion.correct_answer_index && this.selectedAnswer === index;
+    const isCorrect = this.selectedAnswer === this.currentQuestion?.correct_answer_index && this.selectedAnswer === index;
     return isCorrect;
   }
 
   isSelectedIncorrect(index: number): boolean {
-    const isWrong = this.selectedAnswer !== this.currentQuestion.correct_answer_index && this.selectedAnswer === index;
+    const isWrong = this.selectedAnswer !== this.currentQuestion?.correct_answer_index && this.selectedAnswer === index;
     if (isWrong) {
       this.isWrongAnswerSelected = true;
     }
@@ -96,16 +96,11 @@ export class QuizComponent {
     if (this.currentQuestionIndex == this.questions.length) {
 
       let loggedUser = this.authService.getUser();
-      let newHistory = loggedUser?.quizHistoryTitle ? [...loggedUser.quizHistoryTitle] : [];
-      if (this.quiz?.title) {
-        newHistory.push(this.quiz.title);
-        if (newHistory.length > 3) {
-          newHistory.shift();
-        }
-      }
-      this.dataService.editUser(new User(loggedUser?.username!!, loggedUser?.password!!, loggedUser?.name!!, loggedUser?.email!!, ((loggedUser?.quizesPlayed || 0) + 1), ((loggedUser?.points || 0) + this.score), loggedUser?.userId, loggedUser?.isAdmin || false, newHistory))
+      let newUser = new User(loggedUser?.username!!, loggedUser?.password!!, loggedUser?.name!!, loggedUser?.email!!, ((loggedUser?.quizesPlayed || 0) + 1), ((loggedUser?.points || 0) + this.score), loggedUser?.userId, loggedUser?.isAdmin || false)
+      this.dataService.editUser(newUser)
       .subscribe((res: any) => {
         this.quizOver = true;
+        localStorage.setItem('user', JSON.stringify(newUser));
         setTimeout(() => {
           this.router.navigate([''])
         },

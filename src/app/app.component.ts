@@ -8,20 +8,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'QuizExpert';
-
-  questions!: Question[];
-  questionsSubject: BehaviorSubject<Question[]> | null = null;
-  subscription: Subscription | null = null;
-
-  constructor(private questionsService: QuestionsService) {}
-
-  ngOnInit(): void {
-    this.questionsService.getQuestions()
-    .subscribe((res:any) => {
-      this.questions = res;
-    });
-  }
 
 }

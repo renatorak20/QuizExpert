@@ -15,10 +15,7 @@ export class PlayComponent implements OnInit {
     this.quizzesService.getQuizzes()
     .subscribe((res: any) => {
       let index = Math.floor(Math.random() * res.length)
-      console.log(index);
       let quiz = res[index];
-      console.log("Play");
-      console.log(quiz);
       this.router.navigate([`play/${quiz.id}`])
     })
   }
