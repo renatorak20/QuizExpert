@@ -1,35 +1,41 @@
     <h1>Edit Question</h1>
     <form [formGroup]="editQuestionGroup" (submit)="onSubmit($event)">
         <label for="questionTitle">Question Title:</label>
-        <input type="text" id="questionTitle" name="questionTitle" formControlName="title" [(ngModel)]="loadedQuestion.title"><br>
+        <input type="text" id="questionTitle" name="questionTitle" formControlName="title"><br>
 
         <label for="answer1">Answer 1:</label>
-        <input type="text" id="answer1" name="answers[]" formControlName="answer1" [(ngModel)]="loadedQuestion.answers[0]"><br>
+        <input type="text" id="answer1" name="answers[]" formControlName="answer1"><br>
 
         <label for="answer2">Answer 2:</label>
-        <input type="text" id="answer2" name="answers[]" formControlName="answer2" [(ngModel)]="loadedQuestion.answers[1]"><br>
+        <input type="text" id="answer2" name="answers[]" formControlName="answer2"><br>
 
         <label for="answer3">Answer 3:</label>
-        <input type="text" id="answer3" name="answers[]" formControlName="answer3" [(ngModel)]="loadedQuestion.answers[2]"><br>
+        <input type="text" id="answer3" name="answers[]" formControlName="answer3"><br>
 
         <label for="answer4">Answer 4:</label>
-        <input type="text" id="answer4" name="answers[]" formControlName="answer4" [(ngModel)]="loadedQuestion.answers[3]"><br>
+        <input type="text" id="answer4" name="answers[]" formControlName="answer4"><br>
 
         <label for="correctAnswer">Correct Answer:</label>
-        <select id="correctAnswer" name="correctAnswer" required (change)="onAnswerChange($event)">
-            <option *ngFor="let answer of [0,1,2,3]; let i = index;" [value]="i" [selected]="i == loadedQuestion.correct_answer_index">
-                Answer {{answer + 1}}
-            </option>
-        </select><br>
-
-        <label for="category">Category:</label>
-        <select id="category" name="category" required (change)="onCategoryChange($event)">
-            <option *ngFor="let category of categories?.categories; let i = index" [value]="category" [selected]="loadedQuestion.category == i + 1">
-              {{ category }}
-            </option>
-          </select>
-          
-          <br>
+        <select id="correctAnswer" name="correctAnswer" formControlName="correctAnswer" required>
+          <option *ngFor="let answer of [0,1,2,3]; let i = index" [ngValue]="i" [selected]="answer == loadedQuestion.correct_answer_index">
+            Answer {{ answer + 1 }}
+        </option>
+        
+      </select>
+            
+      <br>
+      <div style="color: white; font-size: 20px;" *ngIf="editQuestionGroup.controls['title'].invalid && (editQuestionGroup.controls['title'].dirty || editQuestionGroup.controls['title'].touched)">
+        Title needs to have at least 4 characters
+      </div>
+      <br>
+      <div style="color: white; font-size: 20px;" *ngIf="editQuestionGroup.controls['answer1'].invalid && (editQuestionGroup.controls['answer1'].dirty || editQuestionGroup.controls['answer1'].touched)">
+          All four answers need to be filled in
+      </div>
+      <br>
+      <div style="color: white; font-size: 20px;" *ngIf="editQuestionGroup.controls['correctAnswer'].invalid && (editQuestionGroup.controls['correctAnswer'].dirty || editQuestionGroup.controls['correctAnswer'].touched)">
+          Correct answer needs to be selected
+      </div>
+      <br>
 
         <input type="submit" value="Edit">
     </form>

@@ -8,7 +8,7 @@ import { forkJoin } from 'rxjs';
 import { DataService } from '../../services/Data.service';
 import { User } from '../../models/User';
 import { AuthService } from '../../services/Auth.service';
-import { Categories } from '../../models/Categories';
+import { Categories, Category } from '../../models/Categories';
 
 @Component({
   selector: 'app-quiz',
@@ -31,7 +31,8 @@ export class QuizComponent {
   score: number = 0;
   quizOver: boolean = false;
 
-  categories!: Categories;
+  categories: Category[] = [];
+  currentCategory: string = "";
 
   constructor(private authService: AuthService, private dataService: DataService, private quizzesService: QuizzesService, private questionService: QuestionsService, private activatedRoute: ActivatedRoute, private router: Router) {}
 
@@ -54,13 +55,14 @@ export class QuizComponent {
         if (this.currentQuestion == null) {
           this.nextQuestion();
         }
+
+        this.currentCategory = this.categories.find(cat => cat.id == this.currentQuestion.category)?.title!!;
       });
     });
 
     this.dataService.getCategories()
     .subscribe((res: any) => {
-      const firstKey = Object.keys(res)[0];
-      this.categories = new Categories(res[firstKey].categories, res[firstKey].id);
+      this.categories = res;
     })
   }
 
@@ -98,6 +100,7 @@ export class QuizComponent {
     this.currentQuestion = this.questions[this.currentQuestionIndex];
     this.selectedAnswer = null;
     this.isWrongAnswerSelected = false;
+    this.currentCategory = this.categories.find(cat => cat.id == this.currentQuestion.category)?.title!!;
 
     if (this.currentQuestionIndex == this.questions.length) {
 

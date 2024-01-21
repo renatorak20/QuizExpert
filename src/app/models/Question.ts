@@ -1,11 +1,11 @@
 export class Question {
     title: string;
-    category: number;
+    category: string;
     correct_answer_index: number;
     answers: string[];
     id?: string;
 
-    constructor(title: string, category: number, correct_answer_index: number, answers: string[], id?: string) 
+    constructor(title: string, category: string, correct_answer_index: number, answers: string[], id?: string) 
     {
         this.id = id;
         this.title = title;

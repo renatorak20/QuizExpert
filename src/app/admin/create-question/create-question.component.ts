@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/Data.service';
-import { Categories } from '../../models/Categories';
+import { Categories, Category } from '../../models/Categories';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { QuestionsService } from '../../services/Questions.service';
 import { Question } from '../../models/Question';
@@ -17,17 +17,14 @@ export class CreateQuestionComponent implements OnInit {
 
   constructor(private snackbar: MatSnackBar, private fb: FormBuilder, private dataService: DataService, private questionsService: QuestionsService, private router: Router) {}
 
-  categories: Categories | undefined;
+  categories: Category[] = [];
   createQuestionGroup!: FormGroup<any>;
   selected: any;
 
   ngOnInit(): void {
     this.dataService.getCategories()
       .subscribe((res: any) => {
-        const firstKey = Object.keys(res)[0];
-        this.categories = new Categories(res[firstKey].categories, res[firstKey].id);
-      }, error => {
-        console.error('Error fetching categories:', error);
+        this.categories = res;
       });
 
 
@@ -94,27 +91,24 @@ export class CreateQuestionComponent implements OnInit {
 
   onSubmit(event: Event) {
     event.preventDefault();
-    let categoryType = this.categories?.categories.findIndex((category: any) => {
-      return category == this.selected;
-    });
     if (this.createQuestionGroup.valid) {
-      const formValues = this.createQuestionGroup.value;
+        const formValues = this.createQuestionGroup.value;
 
-      let correctAnswer = formValues.correctAnswer;
-      let answers = [formValues.answer1, formValues.answer2, formValues.answer3, formValues.answer4];
-      let newQuestion = new Question(formValues.title, (categoryType!! + 1), correctAnswer, answers)
-      this.questionsService.addQuesion(newQuestion).subscribe(response => {
-        this.openSnackBar("Question created", "")
-        setTimeout(() => {
-          this.router.navigate(['profile'])
-        },
-          4000
-        )
-      }, error => {
-        console.error('Error deleting question:', error);
-      });
+        let correctAnswer = formValues.correctAnswer;
+        let answers = [formValues.answer1, formValues.answer2, formValues.answer3, formValues.answer4];
+        let newQuestion = new Question(formValues.title, this.selected, correctAnswer, answers);
+
+        this.questionsService.addQuesion(newQuestion).subscribe(response => {
+            this.openSnackBar("Question created", "");
+            setTimeout(() => {
+                this.router.navigate(['profile']);
+            }, 4000);
+        }, error => {
+            console.error('Error creating question:', error);
+        });
     }
-  }
+}
+
 
   openSnackBar(message: string, action: string) {
     this.snackbar.open(message, action, {
