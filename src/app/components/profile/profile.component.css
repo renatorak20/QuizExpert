@@ -66,7 +66,7 @@ body, html {
   }
   
   .edit-btn {
-    background-color: #4CAF50;
+    background-color: yellowgreen;
     color: white;
   }
 
@@ -103,6 +103,7 @@ body, html {
   .user-list {
     margin: 0 10px;
     padding: 20px;
+    margin-top: 5px;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -257,4 +258,8 @@ body, html {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.mat-mdc-tab.mdc-tab {
+  background-color: white;
 }

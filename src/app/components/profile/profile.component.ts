@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthService } from '../../services/Auth.service';
 import { Router } from '@angular/router';
 import { User } from '../../models/User';
@@ -7,13 +7,14 @@ import { QuestionsService } from '../../services/Questions.service';
 import { DataService } from '../../services/Data.service';
 import { QuizzesService } from '../../services/Quizzes.service';
 import { Quiz } from '../../models/Quiz';
-import { Categories } from '../../models/Categories';
+import { Categories, Category } from '../../models/Categories';
 
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrl: './profile.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent implements OnInit {
 
@@ -29,7 +30,7 @@ export class ProfileComponent implements OnInit {
   usersToDelete: string[] = [];
 
   quizzes: Quiz[] = [];
-  categories!: Categories;
+  categories!: Category[];
 
   newCategoryTitle: string = "";
   searchText: string = "";
@@ -60,10 +61,7 @@ export class ProfileComponent implements OnInit {
 
         this.dataService.getCategories()
         .subscribe((res: any) => {
-          const firstKey = Object.keys(res)[0];
-          this.categories = new Categories(res[firstKey].categories, res[firstKey].id);
-        }, error => {
-          console.error('Error fetching categories:', error);
+          this.categories = res;
         });
     } else {
       this.router.navigate(['']);
@@ -119,11 +117,32 @@ export class ProfileComponent implements OnInit {
   }
 
   createCategory() {
-    let newCategories = new Categories([...this.categories.categories, this.newCategoryTitle], this.categories.id)
-    this.dataService.createCategory(newCategories)
+    let newCategory = new Category(this.newCategoryTitle);
+    this.dataService.createCategory(newCategory)
     .subscribe((res: any) => {
-
+      this.categories.push(new Category(this.newCategoryTitle, res.name))
+      console.log(this.categories);
     });
+  }
+
+  deleteCategory(id: string) {
+    this.dataService.deleteCategory(id)
+    .subscribe((res: any) => {
+      this.dataService.getCategories()
+      .subscribe((res: any) => {
+        this.categories = res;
+      })
+    })
+  }
+
+  editCategory(id: string, newTitle: string) {
+    this.dataService.editCategory(new Category(newTitle, id))
+    .subscribe((res: any) => {
+      this.dataService.getCategories()
+      .subscribe((res: any) => {
+        this.categories = res;
+      })
+    })
   }
 
   createQuiz() {

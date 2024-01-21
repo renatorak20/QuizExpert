@@ -41,28 +41,9 @@ export class CreateQuestionComponent implements OnInit {
       }, {
         validators: [
           this.answersFilled('answer1', 'answer2', 'answer3', 'answer4'),
-          this.titleFilled('title'),
           this.checkAnswer('correctAnswer')
         ]
       });
-  }
-
-  titleFilled(title: string) {
-    return (formGroup: AbstractControl): { [key: string]: any } | null => {
-      const Title = formGroup.get(title)!!;
-
-      if (!title) {
-        return null;
-      }
-
-      if (Title.value.length < 4) {
-        Title.setErrors({ minLength: true });
-        return { minLength: true };
-      } else {
-        Title.setErrors(null);
-        return null;
-      }
-    };
   }
 
   checkAnswer(answer: string) {

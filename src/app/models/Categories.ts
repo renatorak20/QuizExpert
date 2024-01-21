@@ -8,3 +8,13 @@ export class Categories {
         this.categories = categories;
     }
 }
+
+export class Category {
+    id?: string;
+    title: string;
+
+    constructor(title: string, id?: string) {
+        this.title = title;
+        this.id = id;
+    }
+}

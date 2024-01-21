@@ -23,10 +23,6 @@ export class CreateQuizComponent implements OnInit {
       'title': new FormControl("", [Validators.required, Validators.minLength(4)]),
       'filter': new FormControl("")
     });
-
-    this.createQuizGroup.get('filter')!.valueChanges.subscribe(value => {
-      this.onFilterChange(value);
-    });
   }
 
   createQuizGroup!: FormGroup<any>;
@@ -35,11 +31,10 @@ export class CreateQuizComponent implements OnInit {
 
   loadedQuestions: Question[] = [];
   filteredQuestions: Question[] = [];
-  isFilterOn = false;
-  currentPage = 1;
 
   title: string = "";
   selectedQuestions: string[] = [];
+  searchText: string = "";
 
   loadQuestions() {
     this.questionService.getQuestions()
@@ -49,7 +44,6 @@ export class CreateQuizComponent implements OnInit {
   }
 
   loadMore() {
-    this.currentPage++;
     this.loadQuestions();
   }
 
@@ -61,16 +55,13 @@ export class CreateQuizComponent implements OnInit {
     }
   }
 
-  onFilterChange(filterValue: string) {
-    if (filterValue.length > 0) {
-      this.isFilterOn = true;
+  onFilterChange() {
+    if (this.searchText.length > 0) {
       this.filteredQuestions = this.loadedQuestions.filter(question => {
-        const filterTextLower = filterValue.toLowerCase();
+        const filterTextLower = this.searchText.toLowerCase();
         const titleMatch = question.title.toLowerCase().includes(filterTextLower);
         return titleMatch;
       });
-    } else {
-      this.isFilterOn = false;
     }
   }
 

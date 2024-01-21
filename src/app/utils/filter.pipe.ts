@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'filter'
@@ -9,7 +9,7 @@ export class FilterPipe implements PipeTransform {
     if (!items) {
       return [];
     }
-    if (!searchText) {
+    if (!searchText || searchText == "") {
       return items;
     }
     searchText = searchText.toLowerCase();

@@ -15,7 +15,7 @@
       <p class="points">Points: {{user?.points}}</p>
     </div>
   </div>
-  <mat-tab-group *ngIf="user?.isAdmin || false" mat-stretch-tabs="false" mat-align-tabs="center" [color]="'white'" [backgroundColor]="'primary'">
+  <mat-tab-group *ngIf="user?.isAdmin || false" mat-stretch-tabs="false" mat-align-tabs="center" >
     <mat-tab label="Questions" class="center">
 
       <div class="search-create-container">
@@ -27,7 +27,7 @@
       </div>
 
         <mat-grid-list cols="3" rowHeight="3:1">
-          <mat-grid-tile *ngFor="let question of filteredQuestions | filter: searchText; let i = index;">
+          <mat-grid-tile *ngFor="let question of questions | filter: searchText; let i = index;">
             <div class="question-card-container">
               <div class="question-card">
                 <p class="question-text">{{question.title}}</p>
@@ -40,6 +40,7 @@
           </mat-grid-tile>
         </mat-grid-list>
     </mat-tab>
+
     <mat-tab label="Quizzes">
       <div class="quiz-list-container">
         <div class="create-quiz-div">
@@ -55,7 +56,7 @@
     <mat-tab label="Users">
       <div class="user-list">
         <div *ngFor="let user of users; let i = index;" class="user-item">
-          <span class="username">Username: {{user.username}}, Mail: {{user.email}}</span>
+          <span class="username">{{user | users}}</span>
           <button *ngIf="user.username != 'Admin'" class="delete-btn" (click)="deleteUser(user.userId!!)">Delete</button>
         </div>
       </div>
@@ -68,11 +69,17 @@
             <button class="add-btn" (click)="createCategory()">Add</button>
         </div>
 
+
         <div *ngIf="categories" class="category-list">
-            <div *ngFor="let category of categories.categories; let i = index;" class="category-item">
-                <span class="category-name">{{category}}</span>
-            </div>
-        </div>
+          <div *ngFor="let category of categories; let i = index" class="category-item">
+              <input type="text" [ngModel]="category.title" (ngModelChange)="category.title = $event">
+              <button class="edit-btn" (click)="editCategory(category.id!!, category.title)">Edit</button>
+              <button class="delete-btn" (click)="deleteCategory(category.id!!)">Delete</button>
+          </div>
+      </div>
+      
+      
+      
     </div>
     </mat-tab>
   </mat-tab-group>

@@ -47,7 +47,13 @@ export class QuizComponent {
     
       forkJoin(questionObservables).subscribe((responses: any) => {
         this.questions = responses;
+        if (this.questions.length == 0 || (this.questions[0] == null && this.questions.length == 1)) {
+          this.router.navigate(['']);
+        }
         this.currentQuestion = this.questions[0];
+        if (this.currentQuestion == null) {
+          this.nextQuestion();
+        }
       });
     });
 

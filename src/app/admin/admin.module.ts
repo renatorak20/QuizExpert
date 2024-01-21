@@ -5,6 +5,8 @@ import { CreateQuizComponent } from './create-quiz/create-quiz.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { CreateQuestionComponent } from './create-question/create-question.component';
 import { EditQuestionComponent } from './edit-question/edit-question.component';
+import { FilterPipe } from '../utils/filter.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [CreateQuizComponent, CreateQuestionComponent, EditQuestionComponent],
@@ -12,7 +14,8 @@ import { EditQuestionComponent } from './edit-question/edit-question.component';
       CommonModule,
       ReactiveFormsModule,
       AdminRoutingModule,
-      FormsModule
+      FormsModule,
+      SharedModule
   ]
 })
 export class AdminModule { }

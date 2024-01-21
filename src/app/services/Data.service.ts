@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { Question } from '../models/Question';
 import { User } from '../models/User';
-import { Categories } from '../models/Categories';
+import { Categories, Category } from '../models/Categories';
 
 @Injectable({
   providedIn: 'root'
@@ -56,11 +56,27 @@ export class DataService {
   }
 
   getCategories() {
-    return this.http.get(`${this.apiUrl}/categories.json`);
+    return this.http.get(`${this.apiUrl}/categories.json`)
+    .pipe(map(res => {
+      const categories=[];
+      for (let key in res){
+        categories.push({...res[key as keyof typeof res], id: key} as Category);
+      }
+      return categories;
+  }));
   }
 
-  createCategory(categories: Categories) {
-    return this.http.patch(`${this.apiUrl}/categories/${categories.id}.json`, categories);
+  createCategory(category: Category) {
+    return this.http.post(`${this.apiUrl}/categories.json`, category);
+  }
+
+  editCategory(category: Category) {
+    const { id, ..._category } = category
+    return this.http.patch(`${this.apiUrl}/categories/${category.id}.json`, _category);
+  }
+
+  deleteCategory(id: string) {
+    return this.http.delete(`${this.apiUrl}/categories/${id}.json`);
   }
 
 }

@@ -10,28 +10,15 @@
     <div class="question-count" [ngClass]="{'questions-limit': selectedQuestions.length > 6 || selectedQuestions.length == 0}">Selected Questions: <span id="selected-count">{{selectedQuestions.length}}</span></div>
     <div class="search-container">
       <input type="text" id="question-search" placeholder="Search questions..." 
-             formControlName="filter" name="filter">
+             formControlName="filter" name="filter" [(ngModel)]="searchText" (change)="onFilterChange()">
     </div>
     
-    
-    
-    <div *ngIf="!isFilterOn" class="questions-container">
-      <div *ngFor="let question of loadedQuestions; let i = index;" class="question-item">
+    <div class="questions-container">
+      <div *ngFor="let question of loadedQuestions | filter: searchText, let i = index;" class="question-item">
         <input type="checkbox" [id]="'question' + question.id" name="questions" 
                (change)="questionSelection($event, question.id!!)">
         <label [for]="'question' + question.id">{{question.title}}</label>
       </div>
     </div>
-    
-
-    <div *ngIf="isFilterOn" class="questions-container">
-      <div *ngFor="let question of filteredQuestions; let i = index;" class="question-item">
-        <input type="checkbox" [id]="'question' + question.id" name="questions" 
-               (change)="questionSelection($event, question.id!!)">
-        <label [for]="'question' + question.id">{{question.title}}</label>
-      </div>
-    </div>
-    
-  
   </form>
 </div>

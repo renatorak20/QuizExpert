@@ -33,6 +33,8 @@ import {
   MatDialogClose,
 } from '@angular/material/dialog';
 import { FilterPipe } from './utils/filter.pipe';
+import { SharedModule } from './shared/shared.module';
+import { UserPipe } from './utils/users.pipe';
 
 
 @NgModule({
@@ -46,7 +48,7 @@ import { FilterPipe } from './utils/filter.pipe';
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
-    FilterPipe
+    UserPipe
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,8 @@ import { FilterPipe } from './utils/filter.pipe';
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    MatListModule
+    MatListModule,
+    SharedModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
