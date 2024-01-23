@@ -42,8 +42,6 @@ export class QuestionsService {
 
   editQuestion(questionToEdit: Question) {
     const { id, ..._questionToEdit } = questionToEdit
-    console.log(questionToEdit);
-    console.log("editing");
     return this.http.patch(`https://quizexpert-e2f59-default-rtdb.europe-west1.firebasedatabase.app/questions/${questionToEdit.id}.json`, _questionToEdit)
   }
 

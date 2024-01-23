@@ -43,10 +43,6 @@ export class CreateQuizComponent implements OnInit {
     })
   }
 
-  loadMore() {
-    this.loadQuestions();
-  }
-
   questionSelection(event: any, questionId: string): void {
     if (event.target.checked) {
       this.selectedQuestions.push(questionId);

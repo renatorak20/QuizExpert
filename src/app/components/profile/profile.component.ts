@@ -158,6 +158,10 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['admin/create-quiz'])
   }
 
+  editQuiz(id: string) {
+    this.router.navigate([`admin/edit-quiz/${id}`]);
+  }
+
   deleteQuiz(id: string) {
     this.quizzesService.deleteQuiz(id)
     .subscribe((res: any) => {

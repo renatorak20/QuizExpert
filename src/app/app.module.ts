@@ -35,6 +35,7 @@ import {
 import { FilterPipe } from './utils/filter.pipe';
 import { SharedModule } from './shared/shared.module';
 import { UserPipe } from './utils/users.pipe';
+import { EditQuizComponent } from './admin/edit-quiz/edit-quiz.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { UserPipe } from './utils/users.pipe';
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
-    UserPipe
+    UserPipe,
+    EditQuizComponent
   ],
   imports: [
     BrowserModule,

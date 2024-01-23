@@ -48,6 +48,7 @@
         </div>
         <div *ngFor="let quiz of quizzes; let i = index;" class="quiz-item">
             <span class="quiz-title">{{quiz.title}}</span>
+            <button class="edit-btn" (click)="editQuiz(quiz.id!!)">Edit</button>
             <button class="delete-btn" (click)="deleteQuiz(quiz.id!!)">Delete</button>
         </div>
     </div>
