@@ -33,7 +33,6 @@ export class ProfileComponent implements OnInit {
   quizzes: Quiz[] = [];
   categories!: Category[];
 
-  newCategoryTitle: string = "";
   searchText: string = "";
 
   categoryGroup!: FormGroup<any>;
@@ -124,7 +123,7 @@ export class ProfileComponent implements OnInit {
   }
 
   createCategory() {
-    let newCategory = new Category(this.newCategoryTitle);
+    let newCategory = new Category(this.categoryGroup.value.newCategory);
     this.dataService.createCategory(newCategory)
     .subscribe((res: any) => {
       this.categories.push(new Category(this.categoryGroup.value.newCategory, res.name))

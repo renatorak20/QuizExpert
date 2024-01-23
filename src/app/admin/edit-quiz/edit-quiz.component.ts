@@ -11,8 +11,7 @@ import { Quiz } from '../../models/Quiz';
 @Component({
   selector: 'app-edit-quiz',
   templateUrl: './edit-quiz.component.html',
-  styleUrl: './edit-quiz.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './edit-quiz.component.css'
 })
 export class EditQuizComponent implements OnInit {
 

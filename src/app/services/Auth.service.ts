@@ -82,7 +82,6 @@ export class AuthService implements OnInit {
 
   isAuthenticated(){
     const user = this.getUser();
-    console.log(user);
     return user != null;
   }
 
@@ -100,7 +99,8 @@ export class AuthService implements OnInit {
           const hash = await bcrypt.hash(newuser.password, salt);
           const newUser = new User(newuser.username, hash, newuser.name, newuser.email);
           this.dataService.addUser(newUser)
-          .subscribe((res => {
+          .subscribe(((res: any) => {
+            newUser.userId = res.name;
             this.users.push(newUser);
             this.usersSubject.next([...this.users]);
             const userCredentials = {

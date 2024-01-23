@@ -69,7 +69,7 @@ export class RegisterComponent implements OnInit {
     event.preventDefault();
     if (this.registerGroup.valid) {
       const formValues = this.registerGroup.value;
-      this.authService.addUser(new User(formValues.username, formValues.password, formValues.name, formValues.email));
+      this.authService.addUser(new User(formValues.username, formValues.password, formValues.name, formValues.email, 0, 0, undefined, false));
     }
   }
   
