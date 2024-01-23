@@ -30,34 +30,31 @@ export class AuthService implements OnInit {
     })
   }
 
-  login(credentials : {username : string, password: string}){
-    this.dataService.getUsers()
-    .subscribe((res:any) => {
-      this.users = res;
-      this.usersSubject.next([...this.users]);
-      new Observable(observer => {
-        setTimeout(async ()=> {
-          let u = this.users.find(u => u.username==credentials.username);
-          if(u) {
-            const passwordValid = await bcrypt.compare(credentials.password, u?.password!!);
-            if(passwordValid) {
-              observer.next(u);
-              this.passwordValidSubject.next(true);
-            } else {
-              this.passwordValidSubject.next(false);
-            }
-          }
-        },1);
-      }).subscribe((user : any) => {
-        if (user) {
-          this.user = user;
-          localStorage.setItem('user', JSON.stringify(this.user));
-          this.authChange.next(true);
-          this.router.navigate(['']);
-        }
-      });
-    })
+  async login(credentials: { username: string, password: string }) {
+    if (!this.users || this.users.length === 0) {
+      await this.fetchUsers();
+    }
+  
+    const user = this.users.find(u => u.username === credentials.username);
+    if (user) {
+      const passwordValid = await bcrypt.compare(credentials.password, user.password);
+      this.passwordValidSubject.next(passwordValid);
+  
+      if (passwordValid) {
+        this.user = user;
+        localStorage.setItem('user', JSON.stringify(this.user));
+        this.authChange.next(true);
+        this.router.navigate(['']);
+      }
+    }
   }
+  
+  private async fetchUsers() {
+    const res = await this.dataService.getUsers().toPromise();
+    this.users = res!!;
+    this.usersSubject.next([...this.users]);
+  }
+  
 
   isPasswordValid() {
     return this.passwordValidSubject.asObservable();

@@ -158,23 +158,25 @@ body, html {
   
   .quiz-list-container {
     width: 100%;
-    max-width: 600px; /* Adjust as needed */
+    max-width: 600px;
     margin: auto;
     padding: 20px;
 }
 
 .quiz-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
 }
 
 .quiz-title {
     font-size: 1em;
     color: white;
+    flex-grow: 1;
+    margin-right: 10px;
 }
 
 .delete-btn {
