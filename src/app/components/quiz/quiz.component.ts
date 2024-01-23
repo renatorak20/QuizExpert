@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Question } from '../../models/Question';
 import { QuestionsService } from '../../services/Questions.service';
 import { QuizzesService } from '../../services/Quizzes.service';
@@ -15,7 +15,7 @@ import { Categories, Category } from '../../models/Categories';
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.css'
 })
-export class QuizComponent {
+export class QuizComponent implements OnInit {
 
   quiz: Quiz | undefined;
 
@@ -37,11 +37,13 @@ export class QuizComponent {
   constructor(private authService: AuthService, private dataService: DataService, private quizzesService: QuizzesService, private questionService: QuestionsService, private activatedRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+    }
     this.quizzesService.getQuizById(this.activatedRoute.snapshot.paramMap.get('id')!!)
     .subscribe((res: any) => {
       this.quiz = res;
       this.questionIds = this.quiz?.questions!!;
-    
       const questionObservables = this.questionIds.map(questionId =>
         this.questionService.getQuestionById(questionId)
       );

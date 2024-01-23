@@ -82,6 +82,7 @@ export class AuthService implements OnInit {
 
   isAuthenticated(){
     const user = this.getUser();
+    console.log(user);
     return user != null;
   }
 

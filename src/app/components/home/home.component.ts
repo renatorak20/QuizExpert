@@ -15,7 +15,7 @@ export class HomeComponent {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['play'])
     } else {
-      this.router.navigate(['/register'])
+      this.router.navigate(['/login'])
     }
   }
 
