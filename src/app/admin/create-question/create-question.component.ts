@@ -6,7 +6,6 @@ import { QuestionsService } from '../../services/Questions.service';
 import { Question } from '../../models/Question';
 import { Router } from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { responsiveFontSizes } from '@material-ui/core';
 
 @Component({
   selector: 'app-create-question',
