@@ -97,7 +97,7 @@ export class AuthService implements OnInit {
         if (!this.doesUserExist(newuser.username)) {
           const salt = await bcrypt.genSalt(10);
           const hash = await bcrypt.hash(newuser.password, salt);
-          const newUser = new User(newuser.username, hash, newuser.name, newuser.email);
+          const newUser = new User(newuser.username, hash, newuser.name, newuser.email, 0, 0);
           this.dataService.addUser(newUser)
           .subscribe(((res: any) => {
             newUser.userId = res.name;
