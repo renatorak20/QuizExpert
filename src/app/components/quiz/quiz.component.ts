@@ -77,6 +77,8 @@ export class QuizComponent implements OnInit {
       const isCorrect = this.selectedAnswer === this.currentQuestion.correct_answer_index;
       if (isCorrect) {
         this.score += 10;
+      } else {
+        this.isWrongAnswerSelected = true;
       }
       this.showNextBtn = true;
     }
