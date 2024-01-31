@@ -1,15 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/Auth.service';
+import { DataService } from '../../services/Data.service';
+import { Fact } from '../../models/Facts';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService, private dataService: DataService) {}
+
+  facts: Fact[] = [];
+
+  ngOnInit() {
+    this.dataService.getRandomFact()
+    .subscribe((res: any) => {
+      this.facts = res;
+    })
+  }
+
 
   startQuiz() {
     if (this.authService.isAuthenticated()) {

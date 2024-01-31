@@ -1,5 +1,8 @@
 <h1 class="title">{{quiz?.title}}</h1>
 <div *ngIf="!quizOver" id="quiz-container">
+  <div *ngIf="loadingQuiz" class="spinner-container">
+    <mat-spinner class="center"></mat-spinner>
+  </div>
     <div class="question" *ngIf="currentQuestion?.title || false">{{currentQuestion.title || ""}}</div>
     <p *ngIf="currentQuestion && currentCategory">Category: {{currentCategory || ""}}</p>
     <p *ngIf="questions">Question {{currentQuestionIndex + 1}}/{{questions.length || 0}}</p>

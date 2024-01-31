@@ -36,6 +36,7 @@ import { FilterPipe } from './utils/filter.pipe';
 import { SharedModule } from './shared/shared.module';
 import { UserPipe } from './utils/users.pipe';
 import { EditQuizComponent } from './admin/edit-quiz/edit-quiz.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { EditQuizComponent } from './admin/edit-quiz/edit-quiz.component';
     MatDialogActions,
     MatDialogClose,
     MatListModule,
-    SharedModule
+    SharedModule,
+    MatProgressSpinnerModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

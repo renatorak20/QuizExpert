@@ -34,6 +34,8 @@ export class QuizComponent implements OnInit {
   categories: Category[] = [];
   currentCategory: string = "";
 
+  loadingQuiz = true;
+
   constructor(private authService: AuthService, private dataService: DataService, private quizzesService: QuizzesService, private questionService: QuestionsService, private activatedRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
@@ -59,6 +61,7 @@ export class QuizComponent implements OnInit {
         }
 
         this.currentCategory = this.categories.find(cat => cat.id == this.currentQuestion.category)?.title!!;
+        this.loadingQuiz = false;
       });
     });
 
@@ -115,7 +118,7 @@ export class QuizComponent implements OnInit {
         setTimeout(() => {
           this.router.navigate([''])
         },
-          7000
+          3000
         )
       })
     }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { Question } from '../models/Question';
@@ -10,8 +10,14 @@ import { Categories, Category } from '../models/Categories';
 })
 export class DataService {
   private apiUrl = "https://quizexpert-e2f59-default-rtdb.europe-west1.firebasedatabase.app";
+  private factsApiUrl = "https://api.api-ninjas.com/v1/facts?limit=1";
 
   constructor(private http: HttpClient) {}
+
+  getRandomFact() {
+    const headers = new HttpHeaders({'X-Api-Key':'Qlq3CKdC6SOTaAnOtJoiug==TvowNiGPb4lxD1nC'});
+    return this.http.get(this.factsApiUrl, { headers });
+  }
 
   getQuestions() {
     return this.http.get(`${this.apiUrl}/questions.json`)

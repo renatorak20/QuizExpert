@@ -13,6 +13,10 @@
       </header>
       <main>
           <button id="startQuiz" (click)="startQuiz()">Start Quiz</button>
+          <div id="randomFactContainer">
+            <p style="font-size: 25px; color: white;">Random fact</p>
+            <p id="randomFact">{{facts[0].fact}}</p>
+        </div>
       </main>
   </div>
 </body>

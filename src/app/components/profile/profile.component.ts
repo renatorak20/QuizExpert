@@ -37,6 +37,8 @@ export class ProfileComponent implements OnInit {
 
   categoryGroup!: FormGroup<any>;
 
+  loadingQuestions = true;
+
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
 
@@ -77,6 +79,7 @@ export class ProfileComponent implements OnInit {
   loadQuestions() {
     this.questionsService.getQuestions()
     .subscribe((res: any) => {
+      this.loadingQuestions = false;
       this.questions = res;
       this.filteredQuestions = res;
     })

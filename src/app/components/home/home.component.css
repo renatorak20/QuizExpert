@@ -38,3 +38,24 @@ header p {
 #startQuiz:hover {
     background-color: #218838;
 }
+
+#randomFactContainer {
+    margin-top: 90px;
+    padding: 20px;
+    background-color: #729ac2;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d6d8da;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#randomFact {
+    color: purple;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    line-height: 1.6;
+}
+

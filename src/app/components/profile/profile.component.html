@@ -17,28 +17,32 @@
   </div>
   <mat-tab-group *ngIf="user?.isAdmin || false" mat-stretch-tabs="false" mat-align-tabs="center" >
     <mat-tab label="Questions" class="center">
-
-      <div class="search-create-container">
-        <mat-form-field class="search-width">
-          <mat-label>Search questions</mat-label>
-          <input matInput placeholder="What is ..." (change)="filterQuestions()" [(ngModel)]="searchText">
-        </mat-form-field>
-        <button class="create-btn" (click)="createQuestion()">Create</button>
+      <div *ngIf="loadingQuestions" class="spinner-container">
+        <mat-spinner class="center"></mat-spinner>
       </div>
-
-        <mat-grid-list cols="3" rowHeight="3:1">
-          <mat-grid-tile *ngFor="let question of questions | filter: searchText; let i = index;">
-            <div class="question-card-container">
-              <div class="question-card">
-                <p class="question-text">{{question.title}}</p>
-                <div class="card-buttons">
-                  <button class="edit-btn" (click)="editQuestion(i)">Edit</button>
-                  <button class="delete-btn" (click)="deleteQuestion(i)">Delete</button>
+      <div *ngIf="!loadingQuestions">
+        <div class="search-create-container">
+          <mat-form-field class="search-width">
+            <mat-label>Search questions</mat-label>
+            <input matInput placeholder="What is ..." (change)="filterQuestions()" [(ngModel)]="searchText">
+          </mat-form-field>
+          <button class="create-btn" (click)="createQuestion()">Create</button>
+        </div>
+  
+          <mat-grid-list cols="3" rowHeight="3:1">
+            <mat-grid-tile *ngFor="let question of questions | filter: searchText; let i = index;">
+              <div class="question-card-container">
+                <div class="question-card">
+                  <p class="question-text">{{question.title}}</p>
+                  <div class="card-buttons">
+                    <button class="edit-btn" (click)="editQuestion(i)">Edit</button>
+                    <button class="delete-btn" (click)="deleteQuestion(i)">Delete</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </mat-grid-tile>
-        </mat-grid-list>
+            </mat-grid-tile>
+          </mat-grid-list>
+      </div>
     </mat-tab>
 
     <mat-tab label="Quizzes">
