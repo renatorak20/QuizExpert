@@ -1,3 +1,3 @@
-export const firebaseConfig = {
+export const environment = {
     production: true
-};
+  };

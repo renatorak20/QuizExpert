@@ -1,6 +1,6 @@
 export class Fact {
 
-    fact: string;
+    fact?: string;
 
     constructor(fact: string) 
     {

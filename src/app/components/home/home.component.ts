@@ -14,11 +14,13 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private dataService: DataService) {}
 
   facts: Fact[] = [];
+  isLoadingFact = true;
 
   ngOnInit() {
     this.dataService.getRandomFact()
     .subscribe((res: any) => {
       this.facts = res;
+      this.isLoadingFact = false;
     })
   }
 
