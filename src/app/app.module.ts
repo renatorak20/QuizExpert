@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { QuestionComponent } from './components/question/question.component';
 import { HttpClientModule } from '@angular/common/http';
 import { QuizComponent } from './components/quiz/quiz.component';
 import { HomeComponent } from './components/home/home.component';
@@ -42,7 +41,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     AppComponent,
-    QuestionComponent,
     QuizComponent,
     HomeComponent,
     NavbarComponent,
