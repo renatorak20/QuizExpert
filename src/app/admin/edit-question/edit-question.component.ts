@@ -40,7 +40,6 @@ export class EditQuestionComponent implements OnInit {
     this.questionService.getQuestionById(this.questionId)
     .subscribe((res: any) => {
       this.loadedQuestion = res;
-      console.log(this.loadedQuestion);
       this.loadQuestionForEdit(res);
     })
 
@@ -54,8 +53,7 @@ export class EditQuestionComponent implements OnInit {
       'correctAnswer': new FormControl("", Validators.required)
     }, {
       validators: [
-        this.answersFilled('answer1', 'answer2', 'answer3', 'answer4'),
-        this.checkAnswer('correctAnswer')
+        this.answersFilled('answer1', 'answer2', 'answer3', 'answer4')
       ]
     });
   }
@@ -92,26 +90,7 @@ export class EditQuestionComponent implements OnInit {
       });
     });
   }
-  
 
-  
-  checkAnswer(answer: string) {
-    return (formGroup: AbstractControl): { [key: string]: any } | null => {
-      const answerV = formGroup.get(answer)!!;
-
-      if (!answerV) {
-        return null;
-      }
-
-      if (answerV.value == "") {
-        answerV.setErrors({ notSelected: true });
-        return { notSelected: true };
-      } else {
-        answerV.setErrors(null);
-        return null;
-      }
-    };
-  }
 
   onCategoryChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
@@ -131,8 +110,8 @@ export class EditQuestionComponent implements OnInit {
       const formValues = this.editQuestionGroup.value;
 
       let answers = [formValues.answer1, formValues.answer2, formValues.answer3, formValues.answer4];
-
-      let editedQuestion = new Question(formValues.title, this.loadedQuestion.category, formValues.correctAnswer, answers, this.questionId)
+      const correctAnswer = parseInt(formValues.correctAnswer.charAt(formValues.correctAnswer.length - 1)) - 1;
+      let editedQuestion = new Question(formValues.title, this.loadedQuestion.category, correctAnswer, answers, this.questionId)
       this.questionService.editQuestion(editedQuestion).subscribe(response => {
         this.router.navigate(['profile'])
       });

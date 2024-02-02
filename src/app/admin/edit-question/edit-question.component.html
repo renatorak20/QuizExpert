@@ -17,7 +17,7 @@
 
         <label for="correctAnswer">Correct Answer:</label>
         <select id="correctAnswer" name="correctAnswer" formControlName="correctAnswer" required>
-          <option *ngFor="let answer of [0,1,2,3]; let i = index" [ngValue]="i" [selected]="answer == loadedQuestion.correct_answer_index">
+          <option *ngFor="let answer of [0,1,2,3]; let i = index" [selected]="i == loadedQuestion.correct_answer_index">
             Answer {{ answer + 1 }}
         </option>
         
@@ -30,10 +30,6 @@
       <br>
       <div style="color: white; font-size: 20px;" *ngIf="editQuestionGroup.controls['answer1'].invalid && (editQuestionGroup.controls['answer1'].dirty || editQuestionGroup.controls['answer1'].touched)">
           All four answers need to be filled in
-      </div>
-      <br>
-      <div style="color: white; font-size: 20px;" *ngIf="editQuestionGroup.controls['correctAnswer'].invalid && (editQuestionGroup.controls['correctAnswer'].dirty || editQuestionGroup.controls['correctAnswer'].touched)">
-          Correct answer needs to be selected
       </div>
       <br>
 
