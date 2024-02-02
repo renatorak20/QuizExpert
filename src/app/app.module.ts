@@ -23,9 +23,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './components/profile/profile.component';
 import { MatListModule } from '@angular/material/list';
 import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
