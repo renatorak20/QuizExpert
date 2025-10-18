@@ -14,6 +14,7 @@ body, html {
 }
 
 #quiz-form {
+  background-color: #57a112;
   display: flex;
   flex-direction: column;
 }

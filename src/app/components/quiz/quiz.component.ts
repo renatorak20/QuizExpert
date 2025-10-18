@@ -60,7 +60,7 @@ export class QuizComponent implements OnInit {
           this.nextQuestion();
         }
 
-        this.currentCategory = this.categories.find(cat => cat.id == this.currentQuestion.category)?.title!!;
+        this.currentCategory = this.categories.find(cat => cat._id == this.currentQuestion.category)?.title!!;
         this.loadingQuiz = false;
       });
     });
@@ -103,16 +103,17 @@ export class QuizComponent implements OnInit {
 
   nextQuestion(): void {
     this.showNextBtn = false;
-    this.currentCategory = this.categories.find(cat => cat.id == this.currentQuestion.category)?.title!!;
+    this.currentCategory = this.categories.find(cat => cat._id == this.currentQuestion.category)?.title!!;
     this.currentQuestionIndex++;
     this.currentQuestion = this.questions[this.currentQuestionIndex];
     this.selectedAnswer = null;
     this.isWrongAnswerSelected = false;
-
+    console.log(this.currentQuestionIndex, this.questions.length)
     if (this.currentQuestionIndex == this.questions.length) {
 
       let loggedUser = this.authService.getUser();
       let newUser = new User(loggedUser?.username!!, loggedUser?.password!!, loggedUser?.name!!, loggedUser?.email!!, ((loggedUser?.quizesPlayed || 0) + 1), ((loggedUser?.points || 0) + this.score), loggedUser?.userId, loggedUser?.isAdmin || false)
+      console.log(newUser);
       this.dataService.editUser(newUser)
       .subscribe((res: any) => {
         this.quizOver = true;

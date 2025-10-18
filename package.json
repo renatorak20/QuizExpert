@@ -22,7 +22,11 @@
     "@angular/router": "^17.0.0",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^2.4.3",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
     "firebase": "^10.7.1",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
@@ -40,5 +44,18 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "lite-server": "^2.6.1",
     "typescript": "~5.2.2"
-  }
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renatorak20/QuizExpert.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/renatorak20/QuizExpert/issues"
+  },
+  "homepage": "https://github.com/renatorak20/QuizExpert#readme"
 }

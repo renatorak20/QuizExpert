@@ -100,7 +100,7 @@ export class ProfileComponent implements OnInit {
   }
 
   deleteQuestion(index: number) {
-    let id = this.filteredQuestions[index].id;
+    let id = this.filteredQuestions[index]._id;
     this.questionsService.deleteQuestion(id!!).subscribe(response => {
       this.loadQuestions();
     }, error => {
@@ -109,7 +109,7 @@ export class ProfileComponent implements OnInit {
   }
 
   editQuestion(index: number) {
-    let id = this.filteredQuestions[index].id;
+    let id = this.filteredQuestions[index]._id;
     console.log(this.filteredQuestions);
     console.log(index);
     this.router.navigate([`admin/edit-question/${id}`])

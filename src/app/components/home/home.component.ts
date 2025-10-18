@@ -33,4 +33,14 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  nextFact() {
+    this.isLoadingFact = true;
+    this.facts = [];
+    this.dataService.getRandomFact()
+    .subscribe((res: any) => {
+      this.facts = res;
+      this.isLoadingFact = false;
+    })
+  }
+
 }

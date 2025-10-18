@@ -33,7 +33,7 @@
 
         <label for="category">Category:</label>
         <select id="category" name="category" required (change)="onCategoryChange($event)">
-            <option *ngFor="let category of categories; let i = index" [value]="category.id">
+            <option *ngFor="let category of categories; let i = index" [value]="category._id">
                 {{ category.title }}
             </option>
         </select>

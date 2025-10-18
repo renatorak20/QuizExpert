@@ -19,6 +19,7 @@
               <mat-spinner *ngIf="isLoadingFact"></mat-spinner>
             </div>
             <p id="randomFact">{{facts[0]?.fact || ''}}</p>
+            <button id="next-fact-button" (click)="nextFact()">Next fact</button>
         </div>
       </main>
   </div>

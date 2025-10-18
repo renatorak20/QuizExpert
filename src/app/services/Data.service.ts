@@ -9,8 +9,8 @@ import { Categories, Category } from '../models/Categories';
   providedIn: 'root'
 })
 export class DataService {
-  private apiUrl = "https://quizexpert-e2f59-default-rtdb.europe-west1.firebasedatabase.app";
-  private factsApiUrl = "https://api.api-ninjas.com/v1/facts?limit=1";
+  private apiUrl = "http://localhost:5000/api";
+  private factsApiUrl = "https://api.api-ninjas.com/v1/facts";
 
   constructor(private http: HttpClient) {}
 
@@ -20,13 +20,13 @@ export class DataService {
   }
 
   getQuestions() {
-    return this.http.get(`${this.apiUrl}/questions.json`)
+    return this.http.get(`${this.apiUrl}/questions`)
       .pipe(
         map((res: any) => {
           const questions = [];
           for (const key in res) {
             if (res.hasOwnProperty(key)) {
-              questions.push({ ...res[key], id: key } as Question);
+              questions.push({ ...res[key], _id: key } as Question);
             }
           }
           return questions;
@@ -35,7 +35,7 @@ export class DataService {
   }
 
   getUsers() {
-    return this.http.get(`${this.apiUrl}/users.json`)
+    return this.http.get(`${this.apiUrl}/users`)
     .pipe(map(res => {
         const users=[];
         for (let key in res){
@@ -46,43 +46,43 @@ export class DataService {
   };
 
   addUser(newUser: User) {
-    return this.http.post(`${this.apiUrl}/users.json`, newUser);
+    return this.http.post(`${this.apiUrl}/users`, newUser);
   }
 
   getUserById(userId: string) {
-    return this.http.get(`${this.apiUrl}/users/${userId}.json`);
+    return this.http.get(`${this.apiUrl}/users/${userId}`);
   }
 
   deleteUser(userId: string) {
-    return this.http.delete(`${this.apiUrl}/users/${userId}.json`);
+    return this.http.delete(`${this.apiUrl}/users/${userId}`);
   }
 
   editUser(user: User) {
-    return this.http.patch(`${this.apiUrl}/users/${user.userId}.json`, user);
+    return this.http.patch(`${this.apiUrl}/users/${user.userId}`, user);
   }
 
   getCategories() {
-    return this.http.get(`${this.apiUrl}/categories.json`)
+    return this.http.get(`${this.apiUrl}/categories`)
     .pipe(map(res => {
       const categories=[];
       for (let key in res){
-        categories.push({...res[key as keyof typeof res], id: key} as Category);
+        categories.push({...res[key as keyof typeof res], _id: key} as Category);
       }
       return categories;
   }));
   }
 
   createCategory(category: Category) {
-    return this.http.post(`${this.apiUrl}/categories.json`, category);
+    return this.http.post(`${this.apiUrl}/categories`, category);
   }
 
   editCategory(category: Category) {
-    const { id, ..._category } = category
-    return this.http.patch(`${this.apiUrl}/categories/${category.id}.json`, _category);
+    const { _id: id, ..._category } = category
+    return this.http.patch(`${this.apiUrl}/categories/${category._id}`, _category);
   }
 
   deleteCategory(id: string) {
-    return this.http.delete(`${this.apiUrl}/categories/${id}.json`);
+    return this.http.delete(`${this.apiUrl}/categories/${id}`);
   }
 
 }

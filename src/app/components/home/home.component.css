@@ -35,6 +35,17 @@ header p {
     margin-top: 20px;
 }
 
+#next-fact-button {
+    font-size: 20px;
+    padding: 10px 20px;
+    background-color: #90a728;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
 #startQuiz:hover {
     background-color: #218838;
 }
@@ -52,7 +63,7 @@ header p {
 }
 
 #randomFact {
-    color: purple;
+    color: rgb(255, 0, 149);
     font-weight: bold;
     font-size: 18px;
     text-align: center;

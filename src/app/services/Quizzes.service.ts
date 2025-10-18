@@ -20,7 +20,7 @@ export class QuizzesService {
           const questions = [];
           for (const key in res) {
             if (res.hasOwnProperty(key)) {
-              questions.push({ ...res[key], id: key } as Quiz);
+              questions.push({ ...res[key], _id: key } as Quiz);
             }
           }
           return questions;
@@ -41,8 +41,8 @@ export class QuizzesService {
   }
 
   editQuiz(quizToEdit: Quiz) {
-    const { id, ..._quizToEdit } = quizToEdit
-    return this.http.patch(`https://quizexpert-e2f59-default-rtdb.europe-west1.firebasedatabase.app/quizzes/${quizToEdit.id}.json`, _quizToEdit)
+    const { _id: id, ..._quizToEdit } = quizToEdit
+    return this.http.patch(`https://quizexpert-e2f59-default-rtdb.europe-west1.firebasedatabase.app/quizzes/${quizToEdit._id}.json`, _quizToEdit)
   }
 
 }

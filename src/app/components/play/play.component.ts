@@ -21,7 +21,7 @@ export class PlayComponent implements OnInit {
         }
         let index = Math.floor(Math.random() * res.length)
         let quiz = res[index];
-        this.router.navigate([`play/${quiz.id}`])
+        this.router.navigate([`play/${quiz._id}`])
       })
     } else {
       this.router.navigate(['/login']);
