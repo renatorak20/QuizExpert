@@ -34,7 +34,6 @@ export class AuthService implements OnInit {
     if (!this.users || this.users.length === 0) {
       await this.fetchUsers();
     }
-  
     const user = this.users.find(u => u.username === credentials.username);
     if (user) {
       const passwordValid = await bcrypt.compare(credentials.password, user.password);
@@ -77,7 +76,7 @@ export class AuthService implements OnInit {
   }
 
   getUserById() {
-    return this.dataService.getUserById(this.user?.userId!!);
+    return this.dataService.getUserById(this.user?._id!!);
   }
 
   isAuthenticated(){
@@ -101,6 +100,7 @@ export class AuthService implements OnInit {
           this.dataService.addUser(newUser)
           .subscribe(((res: any) => {
             newUser.userId = res.name;
+            newUser._id = res._id;
             this.users.push(newUser);
             this.usersSubject.next([...this.users]);
             const userCredentials = {

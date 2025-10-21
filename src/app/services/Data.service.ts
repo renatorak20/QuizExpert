@@ -63,10 +63,12 @@ export class DataService {
 
   getCategories() {
     return this.http.get(`${this.apiUrl}/categories`)
-    .pipe(map(res => {
+    .pipe(map((res: any) => {
       const categories=[];
       for (let key in res){
-        categories.push({...res[key as keyof typeof res], _id: key} as Category);
+        if (res.hasOwnProperty(key)) {
+              categories.push(res[key] as Category);
+            }
       }
       return categories;
   }));
@@ -77,8 +79,7 @@ export class DataService {
   }
 
   editCategory(category: Category) {
-    const { _id: id, ..._category } = category
-    return this.http.patch(`${this.apiUrl}/categories/${category._id}`, _category);
+    return this.http.patch(`${this.apiUrl}/categories/${category._id}`, category);
   }
 
   deleteCategory(id: string) {

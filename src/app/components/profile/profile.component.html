@@ -65,7 +65,7 @@
         <div *ngFor="let user of users; let i = index;" class="user-item">
           <span class="username">{{user | users}}</span>
           <button *ngIf="user.username != 'Admin'" class="delete-btn"
-            (click)="deleteUser(user.userId!!)">Delete</button>
+            (click)="deleteUser(user._id!!)">Delete</button>
         </div>
       </div>
     </mat-tab>

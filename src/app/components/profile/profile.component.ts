@@ -9,6 +9,7 @@ import { QuizzesService } from '../../services/Quizzes.service';
 import { Quiz } from '../../models/Quiz';
 import { Categories, Category } from '../../models/Categories';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private questionsService: QuestionsService, private dataService: DataService, private quizzesService: QuizzesService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private questionsService: QuestionsService, private dataService: DataService, private quizzesService: QuizzesService, private snackbar: MatSnackBar) {}
 
   user: User | null = null;
   isAdmin: boolean = false;
@@ -110,14 +111,13 @@ export class ProfileComponent implements OnInit {
 
   editQuestion(index: number) {
     let id = this.filteredQuestions[index]._id;
-    console.log(this.filteredQuestions);
-    console.log(index);
     this.router.navigate([`admin/edit-question/${id}`])
   }
 
   deleteUser(userId: string) {
     this.dataService.deleteUser(userId)
     .subscribe((res: any) => {
+      this.openSnackBar("User deleted", "");
       this.dataService.getUsers()
         .subscribe((res: any) => {
           this.users = res;
@@ -130,13 +130,14 @@ export class ProfileComponent implements OnInit {
     this.dataService.createCategory(newCategory)
     .subscribe((res: any) => {
       this.categories.push(new Category(this.categoryGroup.value.newCategory, res.name))
-      console.log(this.categories);
+      this.openSnackBar("Category created", "");
     });
   }
 
   deleteCategory(id: string) {
     this.dataService.deleteCategory(id)
     .subscribe((res: any) => {
+      this.openSnackBar("Category deleted", "");
       this.dataService.getCategories()
       .subscribe((res: any) => {
         this.categories = res;
@@ -148,6 +149,7 @@ export class ProfileComponent implements OnInit {
     if (newTitle.length > 3) {
       this.dataService.editCategory(new Category(newTitle, id))
       .subscribe((res: any) => {
+        this.openSnackBar("Category edited", "");
         this.dataService.getCategories()
         .subscribe((res: any) => {
           this.categories = res;
@@ -171,6 +173,12 @@ export class ProfileComponent implements OnInit {
       .subscribe((res: any) => {
         this.quizzes = res;
       })
+    });
+  }
+
+    openSnackBar(message: string, action: string) {
+    this.snackbar.open(message, action, {
+      duration: 3000,
     });
   }
 

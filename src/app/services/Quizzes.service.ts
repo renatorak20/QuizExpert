@@ -8,41 +8,40 @@ import { Quiz } from '../models/Quiz';
   providedIn: 'root'
 })
 export class QuizzesService {
-  private apiUrl = 'https://quizexpert-e2f59-default-rtdb.europe-west1.firebasedatabase.app/quizzes.json';
-  private apiUrlShort = 'https://quizexpert-e2f59-default-rtdb.europe-west1.firebasedatabase.app';
+  private apiUrl = 'http://localhost:5000/api';
 
   constructor(private http: HttpClient) {}
 
   getQuizzes() {
-    return this.http.get(`${this.apiUrl}`)
+    return this.http.get(`${this.apiUrl}/quizzes`)
       .pipe(
         map((res: any) => {
-          const questions = [];
+          const quizzes = [];
           for (const key in res) {
             if (res.hasOwnProperty(key)) {
-              questions.push({ ...res[key], _id: key } as Quiz);
+              quizzes.push(res[key] as Quiz);
             }
           }
-          return questions;
+          return quizzes;
         })
       );
   }
 
   getQuizById(id: string) {
-    return this.http.get(`${this.apiUrlShort}/quizzes/${id}.json`)
+    return this.http.get(`${this.apiUrl}/quizzes/${id}`)
   }
 
   addQuiz(newQuiz: Quiz) {
-    return this.http.post(`${this.apiUrl}`, newQuiz)
+    return this.http.post(`${this.apiUrl}/quizzes`, newQuiz)
   }
 
   deleteQuiz(quizId: string) {
-    return this.http.delete(`${this.apiUrlShort}/quizzes/${quizId}.json`)
+    return this.http.delete(`${this.apiUrl}/quizzes/${quizId}`)
   }
 
   editQuiz(quizToEdit: Quiz) {
     const { _id: id, ..._quizToEdit } = quizToEdit
-    return this.http.patch(`https://quizexpert-e2f59-default-rtdb.europe-west1.firebasedatabase.app/quizzes/${quizToEdit._id}.json`, _quizToEdit)
+    return this.http.patch(`${this.apiUrl}/quizzes/${quizToEdit._id}`, _quizToEdit)
   }
 
 }
