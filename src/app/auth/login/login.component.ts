@@ -37,14 +37,19 @@ export class LoginComponent implements OnInit {
       this.authService.login({username: this.loginForm.value.username, password: this.loginForm.value.password});
       this.authService.isPasswordValid()
       .subscribe(isValid => {
-        if (!isValid) {
+        /*if (!isValid) {
           this.wrongPassword = true;
         } else {
           this.wrongPassword = false;
-        }
+        }*/
       })
     }
   }
-  
+
+googleLogin(event: Event) {
+  event.preventDefault();
+  event.stopPropagation();
+  window.location.href = `${this.authService.apiURL}/google`;
+}
 
 }

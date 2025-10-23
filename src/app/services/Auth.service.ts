@@ -9,6 +9,7 @@ import { User } from '../models/User';
 @Injectable()
 export class AuthService implements OnInit {
 
+  apiURL = 'http://localhost:5001/quizexpert/v1/auth';
   user : User | null = null;
   errorEmitter : Subject<string> = new Subject<string>();
   authChange : Subject<boolean> = new Subject<boolean>();
@@ -16,7 +17,7 @@ export class AuthService implements OnInit {
   users: User[] = [];
   usersSubject: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
   private passwordValidSubject = new BehaviorSubject<boolean>(false);
-  constructor(private router : Router, private dataService: DataService) { }
+  constructor(private router : Router, private dataService: DataService, private http: HttpClient) { }
 
   ngOnInit() {
     this.getUsers()
@@ -30,28 +31,56 @@ export class AuthService implements OnInit {
     })
   }
 
-  async login(credentials: { username: string, password: string }) {
-    if (!this.users || this.users.length === 0) {
-      await this.fetchUsers();
-    }
-    const user = this.users.find(u => u.username === credentials.username);
-    if (user) {
-      const passwordValid = await bcrypt.compare(credentials.password, user.password);
-      this.passwordValidSubject.next(passwordValid);
-  
-      if (passwordValid) {
-        this.user = user;
-        localStorage.setItem('user', JSON.stringify(this.user));
-        this.authChange.next(true);
-        this.router.navigate(['']);
-      }
+  login(credentials: { username: string; password: string }) {
+  return this.http.post<{ token: string, user: User }>(`${this.apiURL}/login`, credentials)
+    .subscribe(res => {
+      this.setToken(res.token);
+      this.user = res.user;
+      this.authChange.next(true);
+      this.router.navigate(['']);
+    }, err => {
+      this.errorEmitter.next(err.error.message || 'Login failed');
+    });
+}
+
+
+  handleGoogleLogin(token: string) {
+    try {
+      localStorage.setItem('token', token);
+      this.router.navigate(['']);
+      this.authChange.next(true);
+    } catch (err) {
+      console.error('Google login failed', err);
+      this.errorEmitter.next('Google login failed');
     }
   }
   
-  private async fetchUsers() {
-    const res = await this.dataService.getUsers().toPromise();
-    this.users = res!!;
-    this.usersSubject.next([...this.users]);
+  getMe() {
+    return this.http.get<User>(`${this.apiURL}/me`, {
+      headers: { Authorization: `Bearer ${this.getToken()}` }
+    });
+  }
+
+  setToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+    return !!token;
+  }
+
+
+  logout() {
+    this.user = null;
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    this.authChange.next(false);
+    this.router.navigate(['/login']);
   }
   
 
@@ -59,29 +88,8 @@ export class AuthService implements OnInit {
     return this.passwordValidSubject.asObservable();
   }
 
-  logout(){
-    this.user=null;
-    localStorage.removeItem('user');
-    this.authChange.next(false);
-    this.router.navigate(['/login']);
-  }
-
-  getUser(){
-    let u = localStorage.getItem('user');
-    if (u) {
-      this.user=JSON.parse(u);
-      return {...this.user} as User;
-    }
-    return null;
-  }
-
   getUserById() {
     return this.dataService.getUserById(this.user?._id!!);
-  }
-
-  isAuthenticated(){
-    const user = this.getUser();
-    return user != null;
   }
 
   doesUserExist(username: string) {

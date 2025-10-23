@@ -7,6 +7,7 @@
     <span *ngIf="wrongUsername">User with that username doesn't exist!</span>
     <span *ngIf="wrongPassword">Wrong password!</span>
     <button class="login-button">Login!</button>
+    <button class="google-login-button" (click)="googleLogin($event)">Login with Google</button>
     <div class="register-link">
         <a [routerLink]="['/register']">Go To Register</a>
     </div>

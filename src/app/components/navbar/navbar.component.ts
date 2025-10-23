@@ -20,8 +20,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isLoggedIn = this.authService.isAuthenticated();
     this.authSubscription = this.authService.authChange.subscribe(authStatus => {
       this.isLoggedIn = authStatus;
-      this.isAdmin = this.authService.getUser()?.isAdmin || false;
-    });
+      this.authService.getMe().subscribe((user: any) => {
+        this.isAdmin = user.user.isAdmin || false;
+      }
+    )});
   }
 
   signOut() {

@@ -7,6 +7,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { QuizComponent } from './components/quiz/quiz.component';
+import { GoogleSuccessComponent } from './components/google/GoogleSuccessComponent';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'admin', loadChildren: () => AdminModule},
-  {path: 'profile', component: ProfileComponent}
+  {path: 'profile', component: ProfileComponent},
+  { path: 'auth/success', component: GoogleSuccessComponent }
 ];
 
 @NgModule({

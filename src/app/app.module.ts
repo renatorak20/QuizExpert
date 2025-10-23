@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { QuizComponent } from './components/quiz/quiz.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -33,6 +33,7 @@ import { SharedModule } from './shared/shared.module';
 import { UserPipe } from './utils/users.pipe';
 import { EditQuizComponent } from './admin/edit-quiz/edit-quiz.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { AuthInterceptor } from './auth/AuthInterceptor';
 
 
 @NgModule({
@@ -70,7 +71,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     SharedModule,
     MatProgressSpinnerModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

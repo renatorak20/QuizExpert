@@ -9,7 +9,7 @@ import { Categories, Category } from '../models/Categories';
   providedIn: 'root'
 })
 export class DataService {
-  private apiUrl = "http://localhost:5000/api";
+  private apiUrl = "http://localhost:5001/api";
   private factsApiUrl = "https://api.api-ninjas.com/v1/facts";
 
   constructor(private http: HttpClient) {}
@@ -58,7 +58,7 @@ export class DataService {
   }
 
   editUser(user: User) {
-    return this.http.patch(`${this.apiUrl}/users/${user.userId}`, user);
+    return this.http.patch(`${this.apiUrl}/users/${user.userId ?? user.id}`, user);
   }
 
   getCategories() {

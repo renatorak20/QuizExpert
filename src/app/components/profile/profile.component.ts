@@ -10,6 +10,7 @@ import { Quiz } from '../../models/Quiz';
 import { Categories, Category } from '../../models/Categories';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private questionsService: QuestionsService, private dataService: DataService, private quizzesService: QuizzesService, private snackbar: MatSnackBar) {}
+  constructor(private http: HttpClient, private fb: FormBuilder, private authService: AuthService, private router: Router, private questionsService: QuestionsService, private dataService: DataService, private quizzesService: QuizzesService, private snackbar: MatSnackBar) {}
 
   user: User | null = null;
   isAdmin: boolean = false;
@@ -40,42 +41,35 @@ export class ProfileComponent implements OnInit {
 
   loadingQuestions = true;
 
-  ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
+ngOnInit(): void {
+  if (this.authService.isAuthenticated()) {
+    this.authService.getMe().subscribe((res: any) => {
+      this.user = res.user;
 
-        this.authService.getUserById()
-        .subscribe(((res: any) => {
-          this.user = res;
-        }));
-
-        this.user = this.authService.getUser();
-
-        if (this.authService.getUser()?.isAdmin) {
-          this.isAdmin = this.user?.isAdmin || false;
-          this.loadQuestions();
-          this.quizzesService.getQuizzes()
-          .subscribe((res: any) => {
-            this.quizzes = res;
-          })
-        }
-
-        this.dataService.getUsers()
-        .subscribe((res: any) => {
-          this.users = res;
-        })
-
-        this.dataService.getCategories()
-        .subscribe((res: any) => {
-          this.categories = res;
+      if (this.user?.isAdmin) {
+        this.isAdmin = true;
+        this.loadQuestions();
+        this.quizzesService.getQuizzes().subscribe((res: any) => {
+          this.quizzes = res;
         });
+      }
 
-        this.categoryGroup = this.fb.group({
-          'newCategory': new FormControl("", [Validators.required, Validators.minLength(4)]),
-        });
-    } else {
-      this.router.navigate(['']);
-    }
+      this.dataService.getUsers().subscribe((res: any) => {
+        this.users = res;
+      });
+
+      this.dataService.getCategories().subscribe((res: any) => {
+        this.categories = res;
+      });
+
+      this.categoryGroup = this.fb.group({
+        newCategory: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      });
+    });
+  } else {
+    this.router.navigate(['']);
   }
+}
 
   loadQuestions() {
     this.questionsService.getQuestions()

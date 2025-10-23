@@ -109,19 +109,20 @@ export class QuizComponent implements OnInit {
     this.selectedAnswer = null;
     this.isWrongAnswerSelected = false;
     if (this.currentQuestionIndex == this.questions.length) {
-
-      let loggedUser = this.authService.getUser();
-      let newUser = new User(loggedUser?.username!!, loggedUser?.password!!, loggedUser?.name!!, loggedUser?.email!!, ((loggedUser?.quizesPlayed || 0) + 1), ((loggedUser?.points || 0) + this.score), loggedUser?.userId, loggedUser?.isAdmin || false)
-      this.dataService.editUser(newUser)
-      .subscribe((res: any) => {
-        this.quizOver = true;
-        localStorage.setItem('user', JSON.stringify(newUser));
-        setTimeout(() => {
-          this.router.navigate([''])
-        },
-          3000
-        )
-      })
+      this.authService.getMe().subscribe((res: any) => {
+        let loggedUser = res.user;
+        let newUser = new User(loggedUser?.username!!, loggedUser?.password!!, loggedUser?.name!!, loggedUser?.email!!, ((loggedUser?.quizesPlayed || 0) + 1), ((loggedUser?.points || 0) + this.score), loggedUser?.userId, loggedUser?.isAdmin || false, loggedUser?.id);
+        this.dataService.editUser(newUser)
+        .subscribe((res: any) => {
+          this.quizOver = true;
+          setTimeout(() => {
+            this.router.navigate([''])
+          },
+            3000
+          )
+        })
+      });
+      
     }
   }
 
